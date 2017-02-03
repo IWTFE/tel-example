@@ -10,6 +10,7 @@ import 'nprogress/nprogress.css'
 import Login from './components/login.vue'
 import Regist from './components/regist.vue'
 import Main from './components/main.vue'
+import Req from './components/req.vue'
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
@@ -17,7 +18,8 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/login', component: Login },
   { path: '/regist', component: Regist },
-  { path: '/main', component: Main }
+  { path: '/main', component: Main },
+  { path: '/req', component: Req}
 ]
 
 const router = new VueRouter({
