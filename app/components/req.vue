@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import axios from '../../node_modules/axios/dist/axios.js'
 import { rest } from '../scripts/security/rest_model.js'
 
 export default {
@@ -25,7 +24,7 @@ export default {
       // .catch(function (response) {
       //   console.log(response);
       // });
-      console.log(rest.createAxios({a:1}));
+      console.log(rest.post("http://localhost:9000/test", {a:1}));
     }
   },
   components: {}

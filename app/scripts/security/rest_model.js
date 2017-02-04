@@ -21,11 +21,9 @@
 	    /**
 	     *  POST请求
 	     */
-	Rest.prototype.post = function(url, param, succ, erro) {
+	Rest.prototype.post = function(url, param) {
 	    var that = this;
 	    that.url = url;
-	    that.succ = succ;
-	    that.erro = erro;
 
 	    //对初始化生成的对象深拷贝
 	    // var _param = $.extend(true, {}, that.param);
@@ -100,7 +98,7 @@
 
 	    axios({
           method: 'get',
-          url: 'http://localhost:9000/test',
+          url: that.url,
           data: _param
       })
       .then(function(response) {
