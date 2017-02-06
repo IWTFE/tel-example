@@ -11,7 +11,6 @@
 
 <script>
 import group from './group.vue'
-import VueRouter from 'vue-router'
 
 export default {
   data () {
@@ -29,6 +28,7 @@ export default {
   methods: {
     addTab (index) {
       this.$root.$emit('addTab', { name: 'Tab ' + ++index, title: 'new Tab' + index, content: 'new Tab content'+index })
+      this.$root.$router.push("/main/3");
     }
   },
   components: {
