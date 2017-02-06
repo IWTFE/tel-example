@@ -44,7 +44,7 @@
 	    _param = that.sort(_param);
 	    var _body = JSON.stringify(_param.body);
 	    var _head = JSON.stringify(_param.head);
-	    str_param = 'prvnpoint{"body":' + _body + ',"head":' + _head + '}station';
+	    var str_param = 'prvnpoint{"body":' + _body + ',"head":' + _head + '}station';
 	    var signature = md5(str_param);
 	    _param.head.signature = signature;
 	    //对body进行aes
