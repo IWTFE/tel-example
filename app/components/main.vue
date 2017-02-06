@@ -1,38 +1,52 @@
 <template lang="html">
   <el-row>
     <el-col :span="8">
-      <h5>不带 icon</h5>
       <el-menu default-active="2" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" theme="dark">
-        <el-submenu index="1">
-          <template slot="title">导航一</template>
-          <el-menu-item-group title="分组一">
-            <router-link to="/login"><el-menu-item index="1-1">Go to login</el-menu-item></router-link>
-            <el-menu-item index="1-2">选项2</el-menu-item>
-          </el-menu-item-group>
-          <el-menu-item-group title="分组2">
-            <el-menu-item index="1-3">选项3</el-menu-item>
-          </el-menu-item-group>
-          <el-submenu index="1-4">
-            <template slot="title">选项4</template>
-            <el-menu-item index="1-4-1">选项1</el-menu-item>
-          </el-submenu>
-        </el-submenu>
-        <el-menu-item index="2">导航二</el-menu-item>
-        <el-menu-item index="3">导航三</el-menu-item>
+        <template v-for="item in menu">
+          <template v-if="item.children && item.children.length > 0">
+            <gro :id="item.nodeId" :nodeName="item.nodeName" :menuGroup="item.children"></gro>
+          </template>
+          <template v-else>
+            <its :item="item"></its>
+          </template>
+        </template>
       </el-menu>
     </el-col>
   </el-row>
 </template>
 
 <script>
+import group from './parts/group.vue'
+import items from './parts/items.vue'
+
 export default {
+   data () {
+     return {
+       menu: [
+         {nodeId: "1", nodeName: "菜单一",
+          children: [
+            {nodeId: "2", nodeName: "菜单一下菜单一"},
+            {nodeId: "3", nodeName: "菜单一下菜单二",
+              children: [
+                {nodeId: "4", nodeName: "菜单一下菜单二下菜单一"}
+              ]
+            }
+          ]
+        },
+        {nodeId: "5", nodeName: "菜单二"},
+        {nodeId: "6", nodeName: "菜单三"}
+       ]
+     }
+   },
    methods: {
      handleOpen(key, keyPath) {
-       console.log(key, keyPath);
      },
      handleClose(key, keyPath) {
-       console.log(key, keyPath);
      }
+   },
+   components: {
+     'gro': group,
+     'its': items
    }
  }
 </script>
