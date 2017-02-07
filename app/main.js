@@ -7,13 +7,19 @@ import VueRouter from 'vue-router'
 import NProgress from 'nprogress'//页面顶部进度条
 import 'nprogress/nprogress.css'
 
-import Login from './components/login.vue'
 import Regist from './components/regist.vue'
-import Main from './components/main.vue'
 import Req from './components/req.vue'
 
 Vue.use(ElementUI)
 Vue.use(VueRouter)
+const Login = resolve => {
+    // 成功之后的回调
+    resolve(require("./components/login.vue")); // 这就是异步加载的方式
+}
+const Main = resolve => {
+    // 成功之后的回调
+    resolve(require("./components/main.vue")); // 这就是异步加载的方式
+}
 
 const routes = [
   { path: '/login', component: Login },

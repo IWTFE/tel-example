@@ -32,7 +32,8 @@ export default {
           ]
         },
         {nodeId: "5", nodeName: "菜单二"},
-        {nodeId: "6", nodeName: "菜单三"}
+        {nodeId: "6", nodeName: "菜单三"},
+        {nodeId: "7", nodeName: "菜单四"}
        ]
      }
    },

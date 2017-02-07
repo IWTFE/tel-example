@@ -23,11 +23,15 @@ export default {
     'item',
     'menuGroup'
   ],
-  computed: {},
-  mounted () {},
+  computed: {
+
+  },
+  mounted () {
+
+  },
   methods: {
     addTab (index) {
-      this.$root.$emit('addTab', { name: 'Tab ' + ++index, title: 'new Tab' + index, content: 'new Tab content'+index })
+      this.$root.$emit('addTab', { name: 'Tab' + index, title: 'newTab' + index, content: 'new Tab content'+index })
       this.$root.$router.push("/main/3");
     }
   },
