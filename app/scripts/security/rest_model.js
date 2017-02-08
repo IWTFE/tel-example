@@ -54,102 +54,55 @@
 	    _param = JSON.stringify(_param);
 
 	    // 添加一个响应拦截器
-	    axios.interceptors.response.use(function(response) {
-	        var result,
-	            data = response.data,
-	            code;
-	        switch (parseInt(data.head.result)) {
-	            case 0:
-	                if (data.body !== null) {
-	                    code = data.head.result;
-	                    // return {
-	                    //     // "res": JSON.parse(aesDecrypt(data.body, that.deviceId)),
-	                    //     code: code
-	                    // };
-											return Promise.resolve({code: code});
-	                } else {
-	                    return {};
-	                }
-	                break;
-	            default:
-	                if (data.body !== null) {
-	                    code = data.head.result;
-	                    return {
-	                        "res": JSON.parse(aesDecrypt(data.body, that.deviceId)),
-	                        code: code
-	                    };
-											return Promise.resolve({code: code});
-	                } else {
-	                    return {};
-	                }
-	                break;
-	        }
-	    }, function(error) {
-	        // Do something with response error
-	        return Promise.reject(error);
-	    });
-  		return axios({
-          method: 'get',
-          url: that.url,
-          data: _param
-      })
+			axios.interceptors.response.use(function(response) {
+					var result,
+							data = response.data,
+							message = data.head.message,
+							code = data.head.result;
+					switch (parseInt(data.head.result)) {
+							case 0:
+									if (data.body !== null) {
+											return Promise.resolve({
+												code: code,
+												message: message,
+												res: JSON.parse(aesDecrypt(data.body, that.deviceId))
+											});
+									} else {
+											return {};
+									}
+									break;
+							default:
+									if (data.body !== null) {
+											return Promise.resolve({
+												code: code,
+												message: message,
+												res: JSON.parse(aesDecrypt(data.body, that.deviceId))
+											});
+									} else {
+											return {};
+									}
+									break;
+					}
+			}, function(error) {
+					// Do something with response error
+					return Promise.reject(error);
+			});
+			return axios({
+					method: 'get',
+					url: that.url,
+					data: _param
+			})
 	};
 	/**
 	 * 对象合并
 	 */
 	Rest.prototype.cfgExtend = function(req, param) {
-	        if (!param || typeof param != "object") return "";
-	        for (var key in param) {
-	            req[key] = param[key];
-	        }
-	        return req;
+	    if (!param || typeof param != "object") return "";
+	    for (var key in param) {
+	        req[key] = param[key];
 	    }
-	    /**
-	     * createAxios 发请求
-	     */
-	Rest.prototype.createAxios = function(_param) {
-	    var that = this;
-			// 添加一个响应拦截器
-	    axios.interceptors.response.use(function(response) {
-	        var result,
-	            data = response.data,
-	            code;
-	        switch (parseInt(data.head.result)) {
-	            case 0:
-	                if (data.body !== null) {
-	                    code = data.head.result;
-	                    // return {
-	                    //     // "res": JSON.parse(aesDecrypt(data.body, that.deviceId)),
-	                    //     code: code
-	                    // };
-											return Promise.resolve({code: code});
-	                } else {
-	                    return {};
-	                }
-	                break;
-	            default:
-	                if (data.body !== null) {
-	                    code = data.head.result;
-	                    return {
-	                        "res": JSON.parse(aesDecrypt(data.body, that.deviceId)),
-	                        code: code
-	                    };
-											return Promise.resolve({code: code});
-	                } else {
-	                    return {};
-	                }
-	                break;
-	        }
-	    }, function(error) {
-	        // Do something with response error
-	        return Promise.reject(error);
-	    });
-  		return axios({
-          method: 'get',
-          url: that.url,
-          data: _param
-      })
-	};
+	    return req;
+	}
 	/**
 	 * 排序
 	 */
