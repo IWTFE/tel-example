@@ -1,6 +1,8 @@
-	import { md5	} from './_md5.js'
-	import axios from '../../../node_modules/axios/dist/axios.js'
+	import { md5 } from './_md5.js'
+	import axios from '../../../node_modules/axios/dist/axios.min.js'
 	import { CryptoJS } from './mode-ecb-min.js'
+	import { Fingerprint } from './fingerPrint.js'
+
 	function Rest() {
 	    this.init();
 	}
@@ -8,8 +10,7 @@
 	        var req = {};
 	        var head = {};
 	        var body = {};
-	        //??????????????
-	        var deviceId = "49999999300000000"
+	        var deviceId = md5(Fingerprint.get().toString());
 	        this.deviceId = deviceId;
 	        head.deviceId = deviceId;
 	        head.requestId = new Date().getTime().toString();
@@ -50,8 +51,48 @@
 	    //对body进行aes
 	    _param.body = aesEncrypt(_param.body, this.deviceId);
 	    //签名为null 以排列的字符串
-	    var str = JSON.stringify(_param);
-	    that.createAxios(str);
+	    _param = JSON.stringify(_param);
+
+	    // 添加一个响应拦截器
+	    axios.interceptors.response.use(function(response) {
+	        var result,
+	            data = response.data,
+	            code;
+	        switch (parseInt(data.head.result)) {
+	            case 0:
+	                if (data.body !== null) {
+	                    code = data.head.result;
+	                    // return {
+	                    //     // "res": JSON.parse(aesDecrypt(data.body, that.deviceId)),
+	                    //     code: code
+	                    // };
+											return Promise.resolve({code: code});
+	                } else {
+	                    return {};
+	                }
+	                break;
+	            default:
+	                if (data.body !== null) {
+	                    code = data.head.result;
+	                    return {
+	                        "res": JSON.parse(aesDecrypt(data.body, that.deviceId)),
+	                        code: code
+	                    };
+											return Promise.resolve({code: code});
+	                } else {
+	                    return {};
+	                }
+	                break;
+	        }
+	    }, function(error) {
+	        // Do something with response error
+	        return Promise.reject(error);
+	    });
+  		return axios({
+          method: 'get',
+          url: that.url,
+          data: _param
+      })
 	};
 	/**
 	 * 对象合并
@@ -67,46 +108,47 @@
 	     * createAxios 发请求
 	     */
 	Rest.prototype.createAxios = function(_param) {
-			var that = this;
-	    // 添加一个响应拦截器
+	    var that = this;
+			// 添加一个响应拦截器
 	    axios.interceptors.response.use(function(response) {
 	        var result,
 	            data = response.data,
 	            code;
 	        switch (parseInt(data.head.result)) {
 	            case 0:
-                  if (data.body !== null) {
-                      code = data.head.result;
-											return {"res": JSON.parse(aesDecrypt(data.body, that.deviceId)), code: code};
-                  } else {
-                      return {};
-                  }
+	                if (data.body !== null) {
+	                    code = data.head.result;
+	                    // return {
+	                    //     // "res": JSON.parse(aesDecrypt(data.body, that.deviceId)),
+	                    //     code: code
+	                    // };
+											return Promise.resolve({code: code});
+	                } else {
+	                    return {};
+	                }
 	                break;
 	            default:
-                  if (data.body !== null) {
-                      code = data.head.result;
-											return  {"res": JSON.parse(aesDecrypt(data.body, that.deviceId)), code: code};
-                  } else {
-                      return {};
-                  }
+	                if (data.body !== null) {
+	                    code = data.head.result;
+	                    return {
+	                        "res": JSON.parse(aesDecrypt(data.body, that.deviceId)),
+	                        code: code
+	                    };
+											return Promise.resolve({code: code});
+	                } else {
+	                    return {};
+	                }
 	                break;
 	        }
 	    }, function(error) {
 	        // Do something with response error
 	        return Promise.reject(error);
 	    });
-
-	    axios({
+  		return axios({
           method: 'get',
           url: that.url,
           data: _param
       })
-      .then(function(response) {
-          console.log(response);
-      })
-      // .catch(function(response) {
-      //     console.log(response);
-      // });
 	};
 	/**
 	 * 排序

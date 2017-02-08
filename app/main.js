@@ -6,7 +6,6 @@ import 'element-ui/lib/theme-default/index.css'
 import VueRouter from 'vue-router'
 import NProgress from 'nprogress'//页面顶部进度条
 import 'nprogress/nprogress.css'
-
 import Regist from './components/regist.vue'
 import Req from './components/req.vue'
 

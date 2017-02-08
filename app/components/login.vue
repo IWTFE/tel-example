@@ -1,29 +1,61 @@
-<template>
-  <div class="">
-    <div style="margin-bottom: 20px;">
-      <el-button size="small" @click="handleClick">add tab</el-button>
-    </div>
-    <el-tabs type="card" closable>
-      <el-tab-pane v-for="(item, index) in tabs" :label="item.title" :name="item.name">
-        <component v-bind:is="which_to_show" keep-alive></component>
-      </el-tab-pane>
-    </el-tabs>
-
-  </div>
-
+<template lang="html">
+  <el-tree :data="data" :renderContent="renderContent" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
 </template>
-<script>
 
+<script>
   export default {
     data() {
       return {
-        tabs:[],
-        tabIndex: 0,
-        which_to_show: ""
+        renderContent: function (node) {
+          return node(
+            'a',   // tag name 标签名称
+            "234234234234<a>2323</a>"
+          )
+        },
+        data: [{
+          label: '一级 1',
+          children: [{
+            label: '二级 1-1',
+            children: [{
+              label: '三级 1-1-1'
+            }]
+          }]
+        }, {
+          label: '一级 2',
+          children: [{
+            label: '二级 2-1',
+            children: [{
+              label: '三级 2-1-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }]
+        }, {
+          label: '一级 3',
+          children: [{
+            label: '二级 3-1',
+            children: [{
+              label: '三级 3-1-1'
+            }]
+          }, {
+            label: '二级 3-2',
+            children: [{
+              label: '三级 3-2-1'
+            }]
+          }]
+        }],
+        defaultProps: {
+          children: 'children',
+          label: 'label'
+        }
       };
     },
     methods: {
-      handleClick(tab, event) {
+      handleNodeClick(data) {
+        console.log(data);
       }
     }
   };

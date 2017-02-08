@@ -13,18 +13,9 @@ export default {
   mounted () {},
   methods: {
     test:function(){
-      // axios.get('http://localhost:9000/test', {
-      //   params: {
-      //     ID: 12345
-      //   }
-      // })
-      // .then(function (response) {
-      //   console.log(response);
-      // })
-      // .catch(function (response) {
-      //   console.log(response);
-      // });
-      console.log(rest.post("http://localhost:9000/test", {a:1}));
+      rest.post("http://localhost:9000/test", {a: "1"}).then(function(res){
+        console.log(res);
+      });
     }
   },
   components: {}
