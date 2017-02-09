@@ -13,7 +13,10 @@ export default {
   mounted () {},
   methods: {
     test:function(){
-      rest.post("http://localhost:9000/test", {a: "1"}).then(function(res){
+      var userName = "zwj3333";
+      var password = "33232323";
+      var shortSinglePhone = "133345455555";
+      rest.post("http://localhost:9000/test", {"body":{"userName": userName, "password":password,"shortSinglePhone":shortSinglePhone},"businessId": "CC_CRM_LOGIN"}).then(function(res){
         console.log(res);
       });
     }

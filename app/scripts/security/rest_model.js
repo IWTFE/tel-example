@@ -11,7 +11,9 @@
 	        var head = {};
 	        var body = {};
 	        var deviceId = md5(Fingerprint.get().toString());
-	        this.deviceId = deviceId;
+					deviceId = deviceId.substr(17);
+					console.log("deviceId "+ deviceId.length);
+					this.deviceId = deviceId;
 	        head.deviceId = deviceId;
 	        head.requestId = new Date().getTime().toString();
 	        head.signature = "null";
@@ -45,14 +47,16 @@
 	    _param = that.sort(_param);
 	    var _body = JSON.stringify(_param.body);
 	    var _head = JSON.stringify(_param.head);
-	    var str_param = 'prvnpoint{"body":' + _body + ',"head":' + _head + '}station';
+	    var str_param = 'callcenter{"body":' + _body + ',"head":' + _head + '}crm';
+
 	    var signature = md5(str_param);
 	    _param.head.signature = signature;
 	    //对body进行aes
 	    _param.body = aesEncrypt(_param.body, this.deviceId);
 	    //签名为null 以排列的字符串
 	    _param = JSON.stringify(_param);
-
+			console.log(_param);
+			// console.log(_param);
 	    // 添加一个响应拦截器
 			axios.interceptors.response.use(function(response) {
 					var result,
@@ -88,7 +92,7 @@
 					return Promise.reject(error);
 			});
 			return axios({
-					method: 'get',
+					method: 'post',
 					url: that.url,
 					data: _param
 			})
@@ -160,6 +164,7 @@
 	    if (typeof data == 'object') data = JSON.stringify(data);
 	    var key = "b450d406d61a49a5" + deviceId;
 	    key = md5(key).substr(8, 16);
+			console.log(deviceId)
 	    key = CryptoJS.enc.Utf8.parse(key);
 	    var sendData = CryptoJS.enc.Utf8.parse(data);
 	    var encryptedData = CryptoJS.AES.encrypt(data, key, {
