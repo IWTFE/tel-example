@@ -53,7 +53,9 @@
 	    _param.body = aesEncrypt(_param.body, this.deviceId);
 	    //签名为null 以排列的字符串
 	    _param = JSON.stringify(_param);
+			console.log(_param);
 	    // 添加一个响应拦截器
+			axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 			axios.interceptors.response.use(function(response) {
 					var result,
 							data = response.data,
@@ -160,7 +162,6 @@
 	    if (typeof data == 'object') data = JSON.stringify(data);
 	    var key = "b450d406d61a49a5" + deviceId;
 	    key = md5(key).substr(8, 16);
-			console.log(deviceId)
 	    key = CryptoJS.enc.Utf8.parse(key);
 	    var sendData = CryptoJS.enc.Utf8.parse(data);
 	    var encryptedData = CryptoJS.AES.encrypt(data, key, {
