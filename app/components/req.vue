@@ -19,6 +19,8 @@ export default {
       var crmCorpInfoOid = "312312312312312312312312";
       rest.post("http://localhost:9000/test", {"body":{"userId": userName, "loginPwd":password,"shortSinglePhone":shortSinglePhone, "crmCorpInfoOid": crmCorpInfoOid},"businessId": "CC_CRM_LOGIN"}).then(function(res){
         console.log(res);
+      }).catch(function(err){
+        console.log(err);
       });
     }
   },

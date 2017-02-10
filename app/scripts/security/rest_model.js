@@ -53,7 +53,7 @@
 	    _param.body = aesEncrypt(_param.body, this.deviceId);
 	    //签名为null 以排列的字符串
 	    _param = JSON.stringify(_param);
-			console.log(_param);
+			_param = {"crmData": _param}
 	    // 添加一个响应拦截器
 			axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 			axios.interceptors.response.use(function(response) {
