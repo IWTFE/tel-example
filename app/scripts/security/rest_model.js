@@ -7,20 +7,19 @@
 	    this.init();
 	}
 	Rest.prototype.init = function() {
-	        var req = {};
-	        var head = {};
-	        var body = {};
-	        var deviceId = md5(Fingerprint.get().toString());
-					deviceId = deviceId.substr(17);
-					console.log("deviceId "+ deviceId.length);
-					this.deviceId = deviceId;
-	        head.deviceId = deviceId;
-	        head.requestId = new Date().getTime().toString();
-	        head.signature = "null";
-	        req.head = head;
-	        req.body = body;
-	        this.param = req;
-	    }
+      var req = {};
+      var head = {};
+      var body = {};
+      var deviceId = md5(Fingerprint.get().toString());
+			deviceId = deviceId.substr(17);
+			this.deviceId = deviceId;
+      head.deviceId = deviceId;
+      head.requestId = new Date().getTime().toString();
+      head.signature = "null";
+      req.head = head;
+      req.body = body;
+      this.param = req;
+  }
 	    /**
 	     *  POST请求
 	     */
@@ -48,15 +47,12 @@
 	    var _body = JSON.stringify(_param.body);
 	    var _head = JSON.stringify(_param.head);
 	    var str_param = 'callcenter{"body":' + _body + ',"head":' + _head + '}crm';
-
 	    var signature = md5(str_param);
 	    _param.head.signature = signature;
 	    //对body进行aes
 	    _param.body = aesEncrypt(_param.body, this.deviceId);
 	    //签名为null 以排列的字符串
 	    _param = JSON.stringify(_param);
-			console.log(_param);
-			// console.log(_param);
 	    // 添加一个响应拦截器
 			axios.interceptors.response.use(function(response) {
 					var result,

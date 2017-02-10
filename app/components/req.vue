@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { rest } from '../scripts/security/rest_model.js'
+import rest from '../scripts/security/rest_model.js'
 
 export default {
   data () {
